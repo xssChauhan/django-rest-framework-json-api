@@ -516,6 +516,11 @@ class JSONRenderer(renderers.JSONRenderer):
         if json_api_meta:
             render_data['meta'] = utils.format_keys(json_api_meta)
 
+        to_select = 'user_vote'
+        if render_data["data"]["attributes"].get(to_select) is not None:
+            uc = render_data["data"]["attributes"][to_select]
+            del render_data["data"]["attributes"][to_select]
+            render_data["data"]["relationships"][to_select] = uc
         return super(JSONRenderer, self).render(
             render_data, accepted_media_type, renderer_context
         )
