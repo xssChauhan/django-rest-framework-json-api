@@ -11,7 +11,7 @@ from rest_framework import relations
 from rest_framework import renderers
 from rest_framework.serializers import BaseSerializer, Serializer, ListSerializer
 from rest_framework.settings import api_settings
-
+import ipdb
 from . import utils
 
 
@@ -517,7 +517,8 @@ class JSONRenderer(renderers.JSONRenderer):
             render_data['meta'] = utils.format_keys(json_api_meta)
 
         to_select = 'user_vote'
-        if render_data["data"]["attributes"].get(to_select) is not None:
+
+        if not isinstance(render_data["data"] , list) and render_data["data"]["attributes"].get(to_select) is not None:
             uc = render_data["data"]["attributes"][to_select]
             del render_data["data"]["attributes"][to_select]
             render_data["data"]["relationships"][to_select] = uc
