@@ -522,7 +522,6 @@ class JSONRenderer(renderers.JSONRenderer):
             uc = render_data["data"]["attributes"][to_select]
             del render_data["data"]["attributes"][to_select]
             render_data["data"]["relationships"][to_select] = uc
-            ipdb.set_trace()
             if not render_data.get("included"):
                 render_data["included"] = []
             render_data["included"].append(uc.get("data"))
