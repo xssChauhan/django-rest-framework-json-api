@@ -517,17 +517,18 @@ class JSONRenderer(renderers.JSONRenderer):
             render_data['meta'] = utils.format_keys(json_api_meta)
 
         to_select = 'user_vote'
-
-        if render_data.get("data") and not isinstance(render_data["data"] , list) and render_data["data"]["attributes"].get(to_select):
-            uc = render_data["data"]["attributes"][to_select]
-            del render_data["data"]["attributes"][to_select]
-            render_data["data"]["relationships"][to_select] = uc
-            if not render_data.get("included"):
-                render_data["included"] = []
-            render_data["included"].append(uc.get("data"))
-        elif render_data.get("data") and not isinstance(render_data["data"] , list) and render_data["data"]["attributes"].get(to_select) == {}:
-            del render_data["data"]["attributes"][to_select]
-
+        try:
+            if render_data.get("data") and not isinstance(render_data["data"] , list) and render_data["data"]["attributes"].get(to_select):
+                uc = render_data["data"]["attributes"][to_select]
+                del render_data["data"]["attributes"][to_select]
+                render_data["data"]["relationships"][to_select] = uc
+                if not render_data.get("included"):
+                    render_data["included"] = []
+                render_data["included"].append(uc.get("data"))
+            elif render_data.get("data") and not isinstance(render_data["data"] , list) and render_data["data"]["attributes"].get(to_select) == {}:
+                del render_data["data"]["attributes"][to_select]
+        except Exception as e:
+            pass
 
         return super(JSONRenderer, self).render(
             render_data, accepted_media_type, renderer_context
